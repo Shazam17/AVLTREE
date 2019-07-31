@@ -1,41 +1,31 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <iostream>
 #include <sstream>
 
 #include <SFML/Graphics.hpp>
 
-
-
 #define Log(x) std::cout << x << std::endl
-class Node
+
+struct Node
 {
-public:
 	int key;
+	int height;
 	Node *left;
 	Node *right;
-	int height;
 };
 
-int max(int a, int b);
+inline int max(int a, int b) { return (a > b) ? a : b; }
 
-int height(Node *N)
-{
-	if (N == NULL)
-		return 0;
-	return N->height;
-}
+inline int height(Node *N) { return  N == nullprt ? 0 : N->height;  }
 
-int max(int a, int b)
-{
-	return (a > b) ? a : b;
-}
+inline int getBalance(Node *N) { return N == nullptr ? 0 : height(N->left) - height(N->right); }
 
 Node* newNode(int key)
 {
 	Node* node = new Node();
 	node->key = key;
-	node->left = NULL;
-	node->right = NULL;
+	node->left = nullptr;
+	node->right = nullptr;
 	node->height = 1; 
 	return(node);
 }
@@ -77,17 +67,10 @@ Node *leftRotate(Node *x)
 	return y;
 }
 
-int getBalance(Node *N)
-{
-	if (N == NULL)
-		return 0;
-	return height(N->left) - height(N->right);
-}
-
 Node* insert(Node* node, int key)
 {
 	/* 1. Perform the normal BST insertion */
-	if (node == NULL)
+	if (node == nullptr)
 		return(newNode(key));
 
 	if (key < node->key)
@@ -127,29 +110,6 @@ Node* insert(Node* node, int key)
 	/* return the (unchanged) node pointer */
 	return node;
 }
-class AVLTREE {
-
-	struct node {
-		int val;
-		int height;
-
-		node* left;
-		node* right;
-	};
-
-	node* root;
-
-	void balance() {
-
-	}
-
-	void randomize() {
-
-	}
-	void printTree(sf::RenderWindow & window) {
-
-	}
-};
 
 void displayText(int x, int y,int size , sf::Font &font, std::string message, sf::RenderWindow & window)
 {
@@ -181,39 +141,40 @@ void drawCell(int x, int y,int diametr, sf::CircleShape & shape , sf::RenderWind
 
 void preOrder(Node *root)
 {
-	if (root != NULL)
-	{
-		std::cout << root->key << " ";
-		preOrder(root->left);
-		preOrder(root->right);
-	}
+	if (root == nullptr)
+		return;
+	
+	std::cout << root->key << " ";
+	preOrder(root->left);
+	preOrder(root->right);
 }
+
 void traversal(Node * root)
 {
-	if (root != NULL)
-	{
-		traversal(root->left);
-		std::cout << root->key << std::endl;
-		traversal(root->right);
-	}
+	if (root == nullptr) 
+		return;
+
+	traversal(root->left);
+	std::cout << root->key << std::endl;
+	traversal(root->right);
 }
-std::string iToStr(int number) {
-	std::stringstream ss;
-	ss << number;
-	return ss.str();
-}
+
+inline std::string iToStr(int number) { return std::to_string(number); }
+
 void printBST(Node * root , sf::RenderWindow& window , sf::Vector2<int> size ,sf::Vector2<int> place,
 	sf::Font & font , sf::CircleShape &shape, int wid) 
 {
 	int height = 2;  // TODO calc this 
-	if(root != NULL)
-	{
-		wid -= 25;
-		drawCell(place.x, place.y, 25, shape, window, font, "mes");
-		printBST(root->left, window, size, { place.x - wid ,size.y /height }, font, shape , wid);
-		printBST(root->left, window, size, { place.x + wid ,size.y / height }, font, shape , wid);
-	}
+
+	if (root == nullptr)
+		return;
+
+	wid -= 25;
+	drawCell(place.x, place.y, 25, shape, window, font, "mes");
+	printBST(root->left, window, size, { place.x - wid ,size.y /height }, font, shape , wid);
+	printBST(root->left, window, size, { place.x + wid ,size.y / height }, font, shape , wid);
 }
+
 int main()
 {
 	int dim = 25;
